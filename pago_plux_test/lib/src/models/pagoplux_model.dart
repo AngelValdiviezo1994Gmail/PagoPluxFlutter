@@ -1,10 +1,3 @@
-/* ***************************************************************
- * @author      : Gerardo Yandún
- * @model        : PagoPluxModel
- * @description  : Componente modal que invoca a PagoPlux
- * @version  : v1.0.0
- * @copyright (c)  PagoPlux 2021
- *****************************************************************/
 class PagoPluxModel {
   String? payboxRename;
   String? payboxSendname;
@@ -32,7 +25,7 @@ class PagoPluxModel {
 
   PagoPluxModel(
     {
-      this.payboxRemail = 'da.nielrolesppx@gmail.com',
+      this.payboxRemail,
       this.payboxEnvironment,
       this.payboxProduction,
       this.payboxBase0,

@@ -1,6 +1,8 @@
 
 //import 'dart:io';
 
+import 'dart:convert';
+
 import 'package:pago_plux_test/src/models/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -17,6 +19,7 @@ ResponseValidation objResponseValidationPagoService = ResponseValidation();
 class PagoService extends ChangeNotifier{
 
   final String endPoint = CadenaConexion().apiLogin;
+  final String endPointPrePro = CadenaConexion().preProd;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   
@@ -117,5 +120,34 @@ class PagoService extends ChangeNotifier{
 
     return respuesta;
   }
+
+  historialCobro(String numeroIdentificacion, String initialDate, String finalDate, String tipoPago, String estado, String identificacionCliente) async { 
+    final baseURL = '${endPointPrePro}intv1/integrations/getTransactionsEstablishmentResource';
+
+    final response = await http.post(
+      Uri.parse(baseURL),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, String>
+        {
+          "numeroIdentificacion": numeroIdentificacion, 
+          "initialDate": initialDate, 
+          "finalDate": finalDate, 
+          "tipoPago": tipoPago, 
+          "estado": estado, 
+          "identificacionCliente": identificacionCliente
+        }
+      ),
+    );
+
+    var reponseRs = response.body;
+    final clienteRsp = ClientTypeResponse.fromJson(reponseRs);
+    
+
+    notifyListeners();
+  }
+
 
 }

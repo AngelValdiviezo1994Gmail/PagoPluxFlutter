@@ -14,9 +14,8 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:pago_plux_test/environments/index.dart';
 import 'package:pago_plux_test/src/models/index.dart';
 
-/*
- * Componente View que presenta el modal con al webView de PagoPlux
- */
+ColoresApp objColoresAppModal = new ColoresApp();
+
 class ModalPagoPluxView extends StatelessWidget {
   final PagoPluxModel? pagoPluxModel;
   final Function? onClose;
@@ -29,23 +28,26 @@ class ModalPagoPluxView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String url = Uri.dataFromString(getHTML(this.pagoPluxModel!), mimeType: 'text/html', encoding: Encoding.getByName('UTF-8')).toString();
-    print('Test Angel ruta: ${url}');
+    
     return Material(
       child: Scaffold(
         appBar: PreferredSize(
-            preferredSize: Size.fromHeight(40.0),
-            child: AppBar(
-                automaticallyImplyLeading: false,
-                title: Text('PagoPlux', style: TextStyle(fontSize: 16)),
-                backgroundColor: Color.fromARGB(250, 22, 155, 213),
-                actions: <Widget>[
-                  IconButton(
-                      icon: Icon(Icons.close_sharp),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      }),
-                ],
-                centerTitle: false)),
+          preferredSize: Size.fromHeight(40.0),
+          child: AppBar(
+            automaticallyImplyLeading: false,
+            title: Text('Pago Plux', style: TextStyle(fontSize: 16)),
+            backgroundColor: objColoresAppModal.pluxAzul,
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.close_sharp),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }
+              ),
+            ],
+            centerTitle: false
+          )
+        ),
         body: SafeArea(
             bottom: false,
             child: Container(
@@ -74,8 +76,7 @@ class ModalPagoPluxView extends StatelessWidget {
                 initialChild: Container(
                   color: Colors.white10,
                   child: const Center(
-                    child: Text('Cargando....',
-                        style: TextStyle(color: Colors.black)),
+                    child: Text('Cargando....',style: TextStyle(color: Colors.black)),
                   ),
                 ),
               ),
@@ -84,10 +85,6 @@ class ModalPagoPluxView extends StatelessWidget {
     );
   }
 
-  /*
-   * Se genera la URL para obtener la URL de pago
-   * @param pagoPluxModel  Modelo PagoPlux
-   */
   String getUrl(PagoPluxModel pagoPluxModel) {
     String url = '';
     switch (pagoPluxModel.payboxEnvironment) {
@@ -104,9 +101,6 @@ class ModalPagoPluxView extends StatelessWidget {
     return url;
   }
 
-  /*
-   * Genera el HTML para enviar a PagoPlux
-   */
   String getHTML(PagoPluxModel pagoPluxModel) {
     String html = '<html>';
     html += ' <body><form action="${getUrl(pagoPluxModel)}/movil.html">';

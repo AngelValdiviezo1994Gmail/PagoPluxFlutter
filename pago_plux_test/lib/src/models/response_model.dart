@@ -1,10 +1,3 @@
-/* ***************************************************************
- * @author       : Gerardo Yandún
- * @model        : PagoResponseModel
- * @description  : Objeto de respuesta en pago
- * @version  : v1.0.0
- * @copyright (c)  PagoPlux 2021
- *****************************************************************/
 class PagoResponseModel {
   int? code;
   String? description;

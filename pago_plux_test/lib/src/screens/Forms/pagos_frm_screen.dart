@@ -541,11 +541,10 @@ class PagosFrmScreenState extends State<PagosFrmScreen>
 }
 
 Widget crearTop(BuildContext context, Size objSize) {
-  return Container(height: objSize.height * 0.025);
+  return Container(height: objSize.height * 0.001);
 }
 
 openPpx() {
-  print('Se habre el botón de pagos');
   paymentModel = new PagoPluxModel();
   paymentModel.payboxRemail = 'cristian.bastidas@aol.com';
   paymentModel.payboxEnvironment = 'product';
