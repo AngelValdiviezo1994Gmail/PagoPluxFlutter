@@ -1,0 +1,14 @@
+<string name="description_button_pay">Pagar ahora</string>
+<!-- String Activity PayWeb WebView-->
+<string name="txt_title_loading_activity_webview">Cargando…</string>
+<string name="description_url_invalid">Los datos para construir la url de pago son
+incorrectos, verifique y contacte al administrador</string>
+<string name="toast_exit_activity">Vuelve a presionar para salir</string>
+<string name="intent_extra_key_pagoplux">urlPayPagoPlux</string>
+<string name="intent_extra_key_response_pagoplux">
+responsePayPagoPlux</string>
+<string name="btn_event_js_interface_key">AndroidAppCallNative</string>
+<string name="url_base_pagoplux">
+https:/paybox.pagoplux.com/movil.html</string>
+<string name="url_base_pagoplux_desarrollo">
+https://sandbox-paybox.pagoplux.com/movil.html</string>

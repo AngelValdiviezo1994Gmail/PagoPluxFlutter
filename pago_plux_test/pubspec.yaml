@@ -50,6 +50,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+  modal_bottom_sheet: ^2.1.2
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1

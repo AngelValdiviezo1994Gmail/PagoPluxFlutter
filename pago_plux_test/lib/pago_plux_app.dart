@@ -1,10 +1,11 @@
-import 'package:pago_plux_test/services/index.dart';
+//import 'package:pago_plux_test/src/screens/Errores/index.dart';
+import 'package:pago_plux_test/src/services/index.dart';
 
 import 'package:flutter/material.dart';
-import 'package:pago_plux_test/screens/index.dart';
+import 'package:pago_plux_test/src/screens/index.dart';
 import 'package:provider/provider.dart';
 
-import 'widgets/index.dart';
+import '/src/widgets/index.dart';
 
 class PagoPluxApp extends StatefulWidget {
   
