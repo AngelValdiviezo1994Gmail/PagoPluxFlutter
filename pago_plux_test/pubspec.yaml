@@ -50,7 +50,8 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  modal_bottom_sheet: ^2.1.2
+  modal_bottom_sheet: ^3.0.0-pre
+  flutter_webview_plugin: ^0.4.0
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1

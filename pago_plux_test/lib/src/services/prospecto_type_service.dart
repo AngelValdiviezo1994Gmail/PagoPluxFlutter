@@ -7,7 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
-import '../_environments/index.dart';
+import '../../environments/index.dart';
 
 const storageProspecto = FlutterSecureStorage();
 MensajesAlertas objMensajesProspectoService = MensajesAlertas();
@@ -32,17 +32,6 @@ class ProspectoTypeService extends ChangeNotifier{
     notifyListeners();
   }
 
-  bool tieneUbicacion = false;
-  bool get varTieneUbicacion => tieneUbicacion;
-  set varTieneUbicacion(bool value){
-    tieneUbicacion = value;
-    notifyListeners();
-  }
-
-//  GlobalKey<FormState> FormKey = new GlobalKey<FormState>();
-  //String Var_Ruta_Url = 'http://192.168.15.155:5204/api/v1/Prospectos/0920693975';
-  //String FechaNacimiento = '';
-  //String Genero = '';
   String varDireccion = '';
   String varCorreo = '';
   String varUbicacionLat = '';

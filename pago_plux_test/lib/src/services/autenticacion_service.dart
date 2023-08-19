@@ -2,17 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:pago_plux_test/environments/index.dart';
 import 'package:pago_plux_test/src/models/index.dart';
 import 'package:pago_plux_test/src/utils/index.dart';
 
-import '../_environments/index.dart';
-
-FeatureApp objFeatureAppAuth = FeatureApp();
-
 class AutenticacionService extends ChangeNotifier{
-  final String endPoint = CadenaConexion().apiEndpoint;
-  final String endPointLdap = CadenaConexion().apiEndPointLdap;
-  final String endPointWorkFlow = CadenaConexion().apiEndPointWorkFlow;
 
   final String endPointLogin = CadenaConexion().apiLogin;
 
@@ -117,72 +111,6 @@ class AutenticacionService extends ChangeNotifier{
     //return FormKey.currentState?.validate() ?? false;
   }
 
- 
-  Future<bool> datosEmpleado(String numIdent) async {
-    final baseURL = '${endPoint}Empleados/$numIdent';
-
-    tokenUser = await readToken();
-
-    final responseLogin = await http.get(
-      Uri.parse(baseURL),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $tokenUser',
-      },
-    );
-
-    if(responseLogin.statusCode != 200) return false;
-
-    var reponseRs = responseLogin.body;
-    final objResp = UsuarioTypeResponse.fromJson(reponseRs);
-    objRspUsuarioDatos = objResp;
-    if(objResp.data != null) {
-      
-      objRspUsuario = objResp.data;
-      
-      final baseURL2 = '${endPointWorkFlow}Workflow/GetInfoCargoRolColaborador?identificacion=$numIdent&uidCanal=${objFeatureAppAuth.featureDigiApp}';
-
-      final responseLogin2 = await http.get(
-        Uri.parse(baseURL2),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $tokenUser',
-        },
-      );
-
-      if(responseLogin2.statusCode != 200) return false;
-
-      if(objRspUsuario != null) {
-        storage.write(key: 'objUsuario', value: objRspUsuario!.toJson());
-        storage.write(key: 'objUsuarioLleno', value: 'SI');
-      } else {
-        logOut();
-      }
-      return true;
-    } else {
-
-      return false;
-    }
-    
-  }
-
-  getClienteUser(String numIdent) async {
-    try{
-      final baseURL = '${endPoint}Clientes/GetClienteByIdentificacion/$numIdent';
-
-      final varResponse = await http.get(Uri.parse(baseURL));
-      if(varResponse.statusCode != 200) return null;
-
-      final prospRsp = ClienteValidoTypeResponse.fromJson(varResponse.body);
-      objClienteValido = prospRsp;
-      notifyListeners();
-    
-    }
-    catch(_) {
-      
-    }
-  }
-
   autenticacion(String emailEntra, String password) async { 
     final baseURL = '${endPointLogin}usuarios/autenticar/$emailEntra/$password';//endPoint;//20
 
@@ -193,8 +121,7 @@ class AutenticacionService extends ChangeNotifier{
     var reponseRs = response.body;
     final clienteRsp = ClientTypeResponse.fromJson(reponseRs);//aquí va a variar el objeto de respuesta cuando se cree el token por el api
     tokenUser = clienteRsp.token;
-    varCorreo = emailEntra;
-    storage.write(key: 'jwtDigimon', value: tokenUser);
+    storage.write(key: 'jwtPago', value: tokenUser);
     storage.write(key: 'correoUser', value: emailEntra);
     
     notifyListeners();
@@ -213,13 +140,13 @@ class AutenticacionService extends ChangeNotifier{
   }
 
   Future logOut() async {
-    await storage.delete(key: 'jwtDigimon');
+    await storage.delete(key: 'jwtPago');
     await storage.delete(key: 'correoUser');
     return;
   }
 
   Future<String> readToken() async {
-    return await storage.read(key: 'jwtDigimon') ?? '';
+    return await storage.read(key: 'jwtPago') ?? '';
   }
 
   Future<String> readObjCliente() async {

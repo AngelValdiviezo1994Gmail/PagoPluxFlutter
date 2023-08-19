@@ -14,18 +14,5 @@ class ResponseValidation {
 
   final String responseExitoDelete = '300';
   final String responseNoRegistraDelete = '301';
-
-  final String responseAtrasoInjustificado = 'AI';
-  final String responseFaltaInjustificada = 'FI';
-  final String responseSalidaInjustificada = 'SI';
-  final String responseExcesoReceso = 'ER';
-  final String responseDiaLibre = 'LV';
-
-  final int diaFinalPeriodo = 26;
-
-  final String responseCodTurnoLibre = 'L-00';
-  final String responseCodTurnoFeriado = 'F-00';
-  final String responseCodTurnoVacacion = 'VC-00';
   
-
 }

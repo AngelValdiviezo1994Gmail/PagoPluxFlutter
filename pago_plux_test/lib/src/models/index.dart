@@ -1,3 +1,7 @@
+export 'package:pago_plux_test/src/models/pagoplux_model.dart';
+
+export 'package:pago_plux_test/src/models/response_model.dart';
+
 export 'package:pago_plux_test/src/models/cliente_valido_type_response.dart';
 
 export 'package:pago_plux_test/src/models/cliente_valido_type_models.dart';

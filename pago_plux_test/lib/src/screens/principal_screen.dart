@@ -1,11 +1,11 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
-//import 'package:pago_plux_test/screens/Introduction/introduction_screen.dart';
 import 'package:pago_plux_test/src/screens/index.dart';
+//import 'package:pago_plux_test/src/screens/test_widgets/tests_widgets.dart';
 import 'package:pago_plux_test/src/services/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pago_plux_test/src/_environments/index.dart';
+import 'package:pago_plux_test/environments/index.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -39,8 +39,8 @@ class PrincipalScreenState extends State<PrincipalScreen> {
   int varIndexMenu = 0;
 
   final lstPages = <Widget>[
-    //ListadoDigimons()
-    PagosFrmScreen()
+    PagosFrmScreen(correo: correoGen,)
+    //TestWidgets()
   ];
 
   @override

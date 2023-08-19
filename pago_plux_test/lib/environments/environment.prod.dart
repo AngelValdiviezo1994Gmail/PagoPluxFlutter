@@ -19,14 +19,10 @@ class CadenaConexion {
   // APIs Producción
   
   final String subVersion = 'PROD';
-  final String apiEndpoint = 'https://apienrolapp.enrolapp.ec/api/v1/';
-  final String apiUtilsEndpoint = 'https://apiutils.enrolapp.ec/api/v1/';
-  final String apiEndPointLdap = 'https://apiauth.enrolapp.ec/api/v1/';
-  final String apiEndPointWorkFlow = 'https://apiworkflow.enrolapp.ec/api/v1/';
   final String endPointImagenes = 'https://imagenes.enrolapp.ec/Archivos/Riasem/EnrolApp/imagenes/';
-  final String apiEndPointEcommerce = 'https://apiecommerce.enrolapp.ec/api/v1/';
-  final String apiEndPointEvalCore = 'https://apievalcore.enrolapp.ec/api/v1/';
   final String apiLogin = 'https://crm-backend-delta.vercel.app/';
-  final String apiDigimons = 'https://digi-api.com/api/v1/digimon';
-  final String apiDetalleDigimons = 'https://www.digi-api.com/api/v1';
+
+  static const product = 'https://producto-paybox.pagoplux.com';
+  static const sandbox = 'https://sandbox-paybox.pagoplux.com';
+  static const prod = 'https://paybox.pagoplux.com';
 }

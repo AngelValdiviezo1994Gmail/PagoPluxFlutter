@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../_environments/index.dart';
-
 class ValidacionesUtils extends ChangeNotifier {
-  final String endPoint = CadenaConexion().apiEndPointWorkFlow;
-  final String endPointEnRolApp = CadenaConexion().apiEndpoint;
   final storageVacaciones = const FlutterSecureStorage();
 
   String validaCedula(String varCedula){
@@ -14,11 +10,7 @@ class ValidacionesUtils extends ChangeNotifier {
 
     if(varCedula.length == 10){
       int varDigitoRegion = int.parse(varCedula.substring(0,2));
-
-      if(varCedula == '0123456789' || varCedula == '0123456788' || varCedula == '0123456787') {
-        return 'Ok';
-      }
-
+      
       if(varDigitoRegion >= 1 && varDigitoRegion <= 99){
 
         int nuUltimoDigito = int.parse(varCedula.substring(9,10));

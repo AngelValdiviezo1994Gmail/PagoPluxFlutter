@@ -5,11 +5,8 @@ import 'package:bloc/bloc.dart';
 //ignore: unused_import
 import 'package:meta/meta.dart';
 
-import '../../_environments/index.dart';
 import '../../models/index.dart';
 
-import 'dart:convert'; 
-import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -20,7 +17,6 @@ part 'authentication_event.dart';
 part 'authentication_state.dart';
 
 const storage = FlutterSecureStorage();
-FeatureApp objFeatureAppAuth = FeatureApp();
 
 class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
   int obtieneToken = 0;

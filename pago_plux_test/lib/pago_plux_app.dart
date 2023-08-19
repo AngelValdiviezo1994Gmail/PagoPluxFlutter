@@ -41,12 +41,10 @@ class PagoPluxAppState extends State<PagoPluxApp> {
           create: (_) => AutenticacionService(),
           lazy: false,
         ),
-        /*
         ChangeNotifierProvider(
-          create: (_) => DigimonService(),
+          create: (_) => PagoService(),
           lazy: false,
         ),
-        */
       ],
       child: MaterialApp(
         builder: (varContext, varChild) {

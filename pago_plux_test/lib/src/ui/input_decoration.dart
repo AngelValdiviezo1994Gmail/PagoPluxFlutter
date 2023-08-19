@@ -135,7 +135,7 @@ class InputDecorations{
       errorBorder: const UnderlineInputBorder(//UnderlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
         borderSide: BorderSide(
-          color: Colors.white,
+          color: Colors.red,
         ),
       ),
       labelText: labelText,//'Correo electrónico',

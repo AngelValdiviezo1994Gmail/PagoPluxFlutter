@@ -16,7 +16,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import '../../_environments/index.dart';
+import '../../../environments/index.dart';
 import '../../services/index.dart';
 import '../../ui/index.dart';
 import '../index.dart';
@@ -25,7 +25,6 @@ String CorreoUsuario = '';
 bool cargandoPagina = false;
 ResponseValidation objResponseValidation = ResponseValidation();
 bool esEnConstruccion = false;
-FeatureApp objFeatureAppClave = FeatureApp();
 ColoresApp objColorsAppContrasenia = ColoresApp();
 
 //ignore: must_be_immutable
@@ -228,18 +227,15 @@ class PaswordEvntLog extends StatelessWidget {
                     return;
                   }
                   await loginForm.autenticacion(CorreoUsuario.trim(), loginForm.passWord.trim());
-
-                  //await Future.delayed(const Duration(seconds: 2));
                   
                   final storageLogin = const FlutterSecureStorage();
-                  String tokenUser = await storageLogin.read(key: 'jwtDigimon') ?? '';
+                  String tokenUser = await storageLogin.read(key: 'jwtPago') ?? '';
 
                   if (tokenUser.isEmpty) {
                     Navigator.push(
                       context,
                       CupertinoPageRoute(
-                        builder: (context) => 
-                          AutenticacionErrorScreen(null,'Credenciales incorrectas.','','claveIncorrecta.png',false,false,'','') 
+                        builder: (context) => AutenticacionErrorScreen(null,'Credenciales incorrectas.','','claveIncorrecta.png',false,false,'','') 
                       ),
                     );
                   } else {

@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:pago_plux_test/src/services/index.dart';
 import 'package:pago_plux_test/src/ui/index.dart';
 
-import '../../_environments/index.dart';
+import '../../../environments/index.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';

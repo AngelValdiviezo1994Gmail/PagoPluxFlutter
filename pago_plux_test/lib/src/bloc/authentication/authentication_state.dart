@@ -13,9 +13,6 @@ final class AuthenticationInitial extends AuthenticationState {}
 
 part of 'authentication_bloc.dart';
 
-final String endPointLdap = CadenaConexion().apiEndPointLdap;
-final String endPoint = CadenaConexion().apiEndpoint;
-final String endPointWorkFlow = CadenaConexion().apiEndPointWorkFlow;
 String tokenUserGeneral = '';
 const storageGenial = FlutterSecureStorage();
 bool authLocal = false;
@@ -105,7 +102,7 @@ class AuthenticationState extends Equatable {
         nombreSistemaOperativo = 'iOS';
       }
 
-      String token = await storage.read(key: 'jwtDigimon') ?? '';
+      String token = await storage.read(key: 'jwtPago') ?? '';
       String correo = await storage.read(key: 'correoUser') ?? '';
       String respuesta = token.isNotEmpty ? '$token|$correo' : '';
 
@@ -116,81 +113,7 @@ class AuthenticationState extends Equatable {
     }
     
   }
-
-  Future<String> autenticacionLogin(String varNumIdVal, String passWord) async {
-
-    String tipoCliente = await storage.read(key: 'tipoCliente') ?? '';
-
-    try{
-      final baseURL = '${endPointLdap}LdapUser/AuthenticateLdapUser'; 
-
-      final response = await http.post(
-        Uri.parse(baseURL),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>
-        {
-          "tipoCliente": tipoCliente,
-          "identificacion": varNumIdVal,
-          "password": passWord
-        }
-        ),
-      ); 
-    /*
-      final clienteRsp = ClientTypeResponse.fromJson(response.body);//aquí va a variar el objeto de respuesta cuando se cree el token por el api
-      tokenUserGeneral = clienteRsp.data;
-      */
-
-      storage.write(key: 'jwtDigimon', value: tokenUserGeneral);
-
-      await readToken();
-    }
-    catch(_){
-      return '';
-    }
-
-    if(tipoCliente == 'C') {
-      return datosEmpleado(varNumIdVal);
-    }
-
-    return '';
-  }
-
-  Future<String> datosEmpleado(String numIdent) async {
-    final baseURL = '${endPoint}Empleados/$numIdent';
-
-    tokenUserGeneral = await readToken();
-
-    final response = await http.get(
-      Uri.parse(baseURL),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $tokenUserGeneral',
-      },
-    );
-
-    if(response.statusCode != 200) return '';
-
-
-    final baseURL2 = '${endPointWorkFlow}Workflow/GetInfoCargoRolColaborador?identificacion=${objUs.identificacion}&uidCanal=${objFeatureAppAuth.featureDigiApp}';
-
-    final responseLogin2 = await http.get(
-      Uri.parse(baseURL2),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $tokenUserGeneral',
-      },
-    );
-
-    if(objRspUsuario != null) {
-      storage.write(key: 'objUsuario', value: objRspUsuario!.toJson());
-      storage.write(key: 'objUsuarioLleno', value: 'SI');
-    } 
-    
-    return '${objRspUsuario?.toJson() ?? ''}___${objRspUsuario?.fotoPerfil}';
-  }
-
+  
   @override
   List<Object> get props => [varObtieneToken,objUs];
 }
