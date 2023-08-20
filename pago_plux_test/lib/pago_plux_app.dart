@@ -71,6 +71,7 @@ class PagoPluxAppState extends State<PagoPluxApp> {
             CheckAuthScreen.routerName: (_) => const CheckAuthScreen(),
             RegistroUsuarioScreen.routerName: (_) => RegistroUsuarioScreen(),
             ContraseniaScreen.routerName: (_) => ContraseniaScreen(correoUser: ''),
+            HistorialCobroScreen.routerName: (_) => HistorialCobroScreen(),
           }
       ),
     );

@@ -98,12 +98,14 @@ class PagosFrmScreenState extends State<PagosFrmScreen>
         .animate(_scale2Controller!)
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
-          Future.microtask(() =>
-            Navigator.of(context, rootNavigator: true).pushReplacement(
-              CupertinoPageRoute<bool>(
-                fullscreenDialog: true,
-                builder: (BuildContext context) => const ConexionInternetScreen(),
-              ),
+
+          Future.microtask(() => 
+            Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => HistorialCobroScreen(),
+                transitionDuration: const Duration(seconds: 0),
+              )
             )
           );
         }
@@ -120,7 +122,7 @@ class PagosFrmScreenState extends State<PagosFrmScreen>
       _connectionStatus = result;
     });
 
-    if (_connectionStatus.name == ConnectivityResult.none.name) {
+    if (_connectionStatus.name == ConnectivityResult.none.name) {      
       Future.microtask(() =>
         Navigator.of(context, rootNavigator: true).pushReplacement(
           CupertinoPageRoute<bool>(
@@ -484,7 +486,7 @@ class PagosFrmScreenState extends State<PagosFrmScreen>
                                                 return;
                                               }
                             
-                                              showBarModalBottomSheet(
+                                              await showBarModalBottomSheet(
                                                 topControl: crearTop(context, sizeFrmDatosPers),
                                                 useRootNavigator: true,
                                                 elevation: 5,
@@ -496,6 +498,8 @@ class PagosFrmScreenState extends State<PagosFrmScreen>
                                                   onClose: obtenerDatos,                                                    
                                                 )
                                               );
+
+                                              await Future.delayed(const Duration(seconds: 1));
 
                                               _scaleController!.forward();
                                           },

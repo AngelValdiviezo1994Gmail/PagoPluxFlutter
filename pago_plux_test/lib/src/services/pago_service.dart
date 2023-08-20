@@ -121,19 +121,24 @@ class PagoService extends ChangeNotifier{
     return respuesta;
   }
 
-  historialCobro(String numeroIdentificacion, String initialDate, String finalDate, String tipoPago, String estado, String identificacionCliente) async { 
+  Future<HistorialCobroResponse> historialCobro(String numeroIdentificacion, String initialDate, String finalDate, String tipoPago, String estado, String identificacionCliente) async { 
     final baseURL = '${endPointPrePro}intv1/integrations/getTransactionsEstablishmentResource';
+
+    String username = Credenciales.apiUser;//'o3NXHGmfujN3Tyzp1cyCDu3xst';
+    String password = Credenciales.apiClave;//'TkBhZQP3zwMyx3JwC5HeFqzXM4p0jzsXp0hTbWRnI4riUtJT';
+    String basicAuth = 'Basic ${base64.encode(utf8.encode('$username:$password'))}';
 
     final response = await http.post(
       Uri.parse(baseURL),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'authorization': basicAuth
       },
       body: jsonEncode(
         <String, String>
         {
           "numeroIdentificacion": numeroIdentificacion, 
-          "initialDate": initialDate, 
+          "initialDate": initialDate,
           "finalDate": finalDate, 
           "tipoPago": tipoPago, 
           "estado": estado, 
@@ -143,10 +148,11 @@ class PagoService extends ChangeNotifier{
     );
 
     var reponseRs = response.body;
-    final clienteRsp = ClientTypeResponse.fromJson(reponseRs);
+    final HistorialRsp = HistorialCobroResponse.fromJson(reponseRs);
     
 
     notifyListeners();
+    return HistorialRsp;
   }
 
 

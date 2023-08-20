@@ -5,3 +5,4 @@ export 'package:pago_plux_test/src/screens/Errores/index.dart';
 export 'package:pago_plux_test/src/screens/Introduction/index.dart';
 export 'package:pago_plux_test/src/screens/OnBoarding/index.dart';
 export 'package:pago_plux_test/src/screens/Forms/index.dart';
+export 'package:pago_plux_test/src/screens/HistorialCobro/index.dart';

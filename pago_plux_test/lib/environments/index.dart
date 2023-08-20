@@ -1,3 +1,5 @@
+export 'package:pago_plux_test/environments/credenciales.dart';
+
 export 'package:pago_plux_test/environments/response_validation.dart';
 
 export 'package:pago_plux_test/environments/mensajes_alertas.dart';

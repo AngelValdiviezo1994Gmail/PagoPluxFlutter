@@ -3,7 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pago_plux_test/pago_plux_app.dart';
 import '/src/bloc/index.dart';
 
-void main() {
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(
     MultiBlocProvider(
       providers: [
