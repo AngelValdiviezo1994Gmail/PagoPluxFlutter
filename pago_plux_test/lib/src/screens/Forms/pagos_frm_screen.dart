@@ -572,7 +572,7 @@ class PagosFrmScreenState extends State<PagosFrmScreen> with TickerProviderState
 }
 
 Widget crearTop(BuildContext context, Size objSize) {
-  return Container(height: objSize.height * 0.1);
+  return Container(height: objSize.height * 0.12);
 }
 
 openPpx() {
@@ -587,18 +587,4 @@ openPpx() {
     payboxSendmail: 'jhondoe@gmail.com',
     payboxSendname: 'JHON DOE'
   );
-
-  /*
-  //paymentModel.payboxRemail = 'cristian.bastidas@aol.com';
-  paymentModel.payboxRemail = 'da.nielrolesppx@gmail.com';
-  //paymentModel.payboxEnvironment = 'product'; 
-  paymentModel.payboxEnvironment = 'sandbox';
-  paymentModel.payboxProduction = false;
-  paymentModel.payboxBase0 = 1.0;
-  paymentModel.payboxBase12 = 2.212;
-  paymentModel.payboxSendname = 'JHON DOE';
-  paymentModel.payboxSendmail = 'jhondoe@gmail.com';
-  paymentModel.payboxRename = 'PagoPlux Shop';
-  paymentModel.payboxDescription = 'Pago desde Flutter';
-  */
 }
