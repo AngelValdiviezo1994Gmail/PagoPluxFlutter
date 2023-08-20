@@ -130,7 +130,7 @@ class InputDecorations{
         ),
       hintText: hintText,
       hintStyle: TextStyle(color: colorTexto),
-      errorStyle: TextStyle(color: colorTexto),
+      errorStyle: TextStyle(color: Colors.red),
       counterStyle: TextStyle(color: colorTexto),
       errorBorder: const UnderlineInputBorder(//UnderlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
