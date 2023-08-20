@@ -98,8 +98,14 @@ class PagosFrmScreenState extends State<PagosFrmScreen>
         .animate(_scale2Controller!)
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
-          FocusScope.of(context).unfocus(); //para cerrar teclado del celular
-          //Poner lógica para hacer el pago
+          Future.microtask(() =>
+            Navigator.of(context, rootNavigator: true).pushReplacement(
+              CupertinoPageRoute<bool>(
+                fullscreenDialog: true,
+                builder: (BuildContext context) => const ConexionInternetScreen(),
+              ),
+            )
+          );
         }
       });
   }
@@ -116,12 +122,13 @@ class PagosFrmScreenState extends State<PagosFrmScreen>
 
     if (_connectionStatus.name == ConnectivityResult.none.name) {
       Future.microtask(() =>
-          Navigator.of(context, rootNavigator: true).pushReplacement(
-            CupertinoPageRoute<bool>(
-              fullscreenDialog: true,
-              builder: (BuildContext context) => const ConexionInternetScreen(),
-            ),
-          ));
+        Navigator.of(context, rootNavigator: true).pushReplacement(
+          CupertinoPageRoute<bool>(
+            fullscreenDialog: true,
+            builder: (BuildContext context) => const ConexionInternetScreen(),
+          ),
+        )
+      );
       return;
     }
   }
@@ -483,15 +490,14 @@ class PagosFrmScreenState extends State<PagosFrmScreen>
                                                 elevation: 5,
                                                 expand: true,
                                                 context: context,
-                                                builder: 
-                                                  (context) =>
-                                                  ModalPagoPluxView(
-                                                    pagoPluxModel: paymentModel,
-                                                    onClose: obtenerDatos
-                                                  )
-                                                );
-                            
-                                              //_scaleController!.forward();
+                                                builder: (context) =>
+                                                ModalPagoPluxView(
+                                                  pagoPluxModel: paymentModel,
+                                                  onClose: obtenerDatos,                                                    
+                                                )
+                                              );
+
+                                              _scaleController!.forward();
                                           },
                                           child: Stack(children: <Widget>[
                                             AnimatedBuilder(
@@ -510,7 +516,8 @@ class PagosFrmScreenState extends State<PagosFrmScreen>
                                                               height: 60,
                                                               decoration: BoxDecoration(
                                                                   shape: BoxShape.circle,
-                                                                  color: objColoresAppForms.pluxNaranja),
+                                                                  color: objColoresAppForms.pluxNaranja
+                                                                ),
                                                               child: const Icon(
                                                                 Icons.arrow_forward_ios,
                                                                 color: Colors.white,
@@ -541,13 +548,27 @@ class PagosFrmScreenState extends State<PagosFrmScreen>
 }
 
 Widget crearTop(BuildContext context, Size objSize) {
-  return Container(height: objSize.height * 0.001);
+  return Container(height: objSize.height * 0.3);
 }
 
 openPpx() {
-  paymentModel = new PagoPluxModel();
-  paymentModel.payboxRemail = 'cristian.bastidas@aol.com';
-  paymentModel.payboxEnvironment = 'product';
+  paymentModel = new PagoPluxModel(
+    payboxBase0: 1.0,
+    payboxBase12: 2.212,
+    payboxDescription: 'Pago desde Flutter',
+    payboxEnvironment: 'sandbox',
+    payboxProduction: false,
+    payboxRemail: 'da.nielrolesppx@gmail.com',
+    payboxRename: 'PagoPlux Shop',
+    payboxSendmail: 'jhondoe@gmail.com',
+    payboxSendname: 'JHON DOE'
+  );
+
+  /*
+  //paymentModel.payboxRemail = 'cristian.bastidas@aol.com';
+  paymentModel.payboxRemail = 'da.nielrolesppx@gmail.com';
+  //paymentModel.payboxEnvironment = 'product'; 
+  paymentModel.payboxEnvironment = 'sandbox';
   paymentModel.payboxProduction = false;
   paymentModel.payboxBase0 = 1.0;
   paymentModel.payboxBase12 = 2.212;
@@ -555,4 +576,5 @@ openPpx() {
   paymentModel.payboxSendmail = 'jhondoe@gmail.com';
   paymentModel.payboxRename = 'PagoPlux Shop';
   paymentModel.payboxDescription = 'Pago desde Flutter';
+  */
 }

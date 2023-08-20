@@ -16,9 +16,10 @@ import 'package:pago_plux_test/src/models/index.dart';
 
 ColoresApp objColoresAppModal = new ColoresApp();
 
+//ignore: must_be_immutable
 class ModalPagoPluxView extends StatelessWidget {
   final PagoPluxModel? pagoPluxModel;
-  final Function? onClose;
+  Function? onClose;
 
   ModalPagoPluxView({@required this.pagoPluxModel, @required this.onClose});
 
@@ -35,7 +36,7 @@ class ModalPagoPluxView extends StatelessWidget {
           preferredSize: Size.fromHeight(40.0),
           child: AppBar(
             automaticallyImplyLeading: false,
-            title: Text('Pago Plux', style: TextStyle(fontSize: 16)),
+            title: Text('Pago Plux - Test Angel Valdiviezo', style: TextStyle(fontSize: 16)),
             backgroundColor: objColoresAppModal.pluxAzul,
             actions: <Widget>[
               IconButton(
@@ -58,12 +59,16 @@ class ModalPagoPluxView extends StatelessWidget {
                   JavascriptChannel(
                     name: 'Print',
                     onMessageReceived: (JavascriptMessage message) {
-                      print('Test Angel mensaje: ${message.message}');
-                      print('Test Angel ruta: ${url}');
-                      Map<String, dynamic> response = jsonDecode(message.message);
-                      PagoResponseModel responseModel = PagoResponseModel.fromJsonMap(response);
-                      this.onClose!(responseModel);
-                      Navigator.of(context).pop();
+                      
+                      try {
+                        final responseModel = PagoResponseModel.fromJson(message.message);
+                        //onClose = responseModel;
+                        this.onClose = obtenerDatos(responseModel);
+                        Navigator.of(context).pop();
+                      }
+                      catch(Ex) {
+                        print('Test Error: ${Ex}');
+                      }
                     },
                   )
                 ].toSet()),
@@ -119,10 +124,10 @@ class ModalPagoPluxView extends StatelessWidget {
       html += '<input type="hidden" value="${Uri.encodeFull(pagoPluxModel.payboxDescription!)}" name="PayboxDescription">';
     }
     if (pagoPluxModel.payboxBase0 != null) {
-      html += '<input type="hidden" value="${pagoPluxModel.payboxBase0.toString()}" name="PayboxBase0">';
+      html += '<input type="hidden" value="${pagoPluxModel.payboxBase0}" name="PayboxBase0">';
     }
     if (pagoPluxModel.payboxBase12 != null) {
-      html += '<input type="hidden" value="${pagoPluxModel.payboxBase12.toString()}" name="PayboxBase12">';
+      html += '<input type="hidden" value="${pagoPluxModel.payboxBase12}" name="PayboxBase12">';
     }
     if (pagoPluxModel.payboxEnvironment != null) {
       html += '<input type="hidden" value="${pagoPluxModel.payboxEnvironment!}" name="PayboxEnvironment">';
@@ -181,4 +186,10 @@ class ModalPagoPluxView extends StatelessWidget {
     html += '</html>';
     return html;
   }
+}
+
+obtenerDatos(PagoResponseModel datos) {
+  //voucher = 'Voucher: ' + datos.detail!.token!;
+  //setState(() {});
+  print('LLegoooo 2' + datos.detail!.token!);
 }
