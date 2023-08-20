@@ -1,15 +1,3 @@
-/*
-part of 'authentication_bloc.dart';
-
-sealed class AuthenticationState extends Equatable {
-  const AuthenticationState();
-  
-  @override
-  List<Object> get props => [];
-}
-
-final class AuthenticationInitial extends AuthenticationState {}
-*/
 
 part of 'authentication_bloc.dart';
 
@@ -90,6 +78,7 @@ class AuthenticationState extends Equatable {
         return 'NI';
       }
 
+/*
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
       String nombreSistemaOperativo = '';
@@ -101,6 +90,7 @@ class AuthenticationState extends Equatable {
       if(Platform.isIOS) {
         nombreSistemaOperativo = 'iOS';
       }
+      */
 
       String token = await storage.read(key: 'jwtPago') ?? '';
       String correo = await storage.read(key: 'correoUser') ?? '';

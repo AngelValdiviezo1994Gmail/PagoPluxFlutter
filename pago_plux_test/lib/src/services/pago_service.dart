@@ -155,5 +155,13 @@ class PagoService extends ChangeNotifier{
     return HistorialRsp;
   }
 
+  void LimpiaCampos() {
+    varNombre = "";
+    //varCorreo = "";
+    varTelefono = "";
+    varPago = "";
+    varDireccion = "";
+    varIdentificacion = "";
+  }
 
 }

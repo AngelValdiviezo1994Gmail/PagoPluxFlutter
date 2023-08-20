@@ -5,6 +5,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 //ignore: unused_import
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 //import 'package:modal_bottom_sheet/modal_bottom_sheet.dart' hide ModalBottomSheetRoute;
 import 'package:pago_plux_test/environments/index.dart';
@@ -34,6 +35,7 @@ String nombreGenPago = '';
 String correoGenPago = '';
 PagoPluxModel paymentModel = new PagoPluxModel();
 String tituloMensajeError = 'Error al registrar datos';
+final storagePagoFrm = const FlutterSecureStorage();
 
 //ignore: must_be_immutable
 class PagosFrmScreen extends StatefulWidget {
@@ -51,8 +53,7 @@ class PagosFrmScreen extends StatefulWidget {
   PagosFrmScreenState createState() => PagosFrmScreenState();
 }
 
-class PagosFrmScreenState extends State<PagosFrmScreen>
-    with TickerProviderStateMixin {
+class PagosFrmScreenState extends State<PagosFrmScreen> with TickerProviderStateMixin {
   bool hideIcon = false;
 
   late StreamSubscription<ConnectivityResult> connectivitySubscription;
@@ -147,7 +148,7 @@ class PagosFrmScreenState extends State<PagosFrmScreen>
 
   @override
   Widget build(BuildContext context) {
-    final pagoServiceForm = Provider.of<PagoService>(context);
+    final pagoServiceForm = Provider.of<PagoService>(context, listen: false);
     final sizeFrmDatosPers = MediaQuery.of(context).size;
 
     //ignore: unnecessary_string_escapes
@@ -162,397 +163,416 @@ class PagosFrmScreenState extends State<PagosFrmScreen>
 
     return SafeArea(
       child: WillPopScope(
-          onWillPop: () async => false,
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            body: ChangeNotifierProvider(
-              create: (_) => PagoService(),
+        onWillPop: () async => false,
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/LogoFondoFrm.png'),
+                fit: BoxFit.contain,
+              ),
+            ),
+            width: sizeFrmDatosPers.width,
+            height: sizeFrmDatosPers.height,
+            child: Form(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              key: pagoServiceForm.formKey,
               child: Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/LogoFondoFrm.png'),
-                    fit: BoxFit.contain,
-                  ),
-                ),
+                color: Colors.transparent,
                 width: sizeFrmDatosPers.width,
                 height: sizeFrmDatosPers.height,
-                child: Form(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  child: Container(
-                    color: Colors.transparent,
-                    width: sizeFrmDatosPers.width,
-                    height: sizeFrmDatosPers.height,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Container(
-                            color: Colors.transparent,
-                            width: sizeFrmDatosPers.width * 0.85,
-                            height: sizeFrmDatosPers.height * 0.1,
-                            child: Center(
-                              child: AutoSizeText(
-                                'Completa el formulario por favor',
-                                style: TextStyle(color: objColoresAppForms.pluxNaranja),
-                                maxLines: 1,
-                                presetFontSizes: const [20, 18, 16, 14, 12, 10],
-                              ),
-                            ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        color: Colors.transparent,
+                        width: sizeFrmDatosPers.width * 0.85,
+                        height: sizeFrmDatosPers.height * 0.1,
+                        child: Center(
+                          child: AutoSizeText(
+                            'Completa el formulario por favor',
+                            style: TextStyle(color: objColoresAppForms.pluxNaranja),
+                            maxLines: 1,
+                            presetFontSizes: const [20, 18, 16, 14, 12, 10],
                           ),
-                            
-                          SizedBox(
-                            height: sizeFrmDatosPers.height * 0.003,
+                        ),
+                      ),
+                        
+                      SizedBox(
+                        height: sizeFrmDatosPers.height * 0.003,
+                      ),
+                      
+                      Container(
+                        color: Colors.transparent,
+                        width: sizeFrmDatosPers.width * 0.85,
+                        height: sizeFrmDatosPers.height * 0.13,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            pagoServiceForm.varNombre = value;
+                          },
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(RegExp(regexToRemoveEmoji))
+                          ],
+                          //controller: txtNombre,
+                          style: const TextStyle(color: Colors.black),
+                          maxLines: 1,
+                          keyboardType: TextInputType.text,
+                          initialValue: pagoServiceForm.varNombre,
+                          decoration: InputDecorations.authInputDecoration(
+                            esEdicion: false,
+                            varEsContrasenia: false,
+                            colorBordes: Colors.black,
+                            colorTexto: Colors.black,
+                            varTamanioIcono: 35,
+                            hintText: '',
+                            labelText: 'Nombres',
+                            sufixIcon: Icons.person,
+                            colorPrefixIcon: Colors.black,
+                            varOnPress: () {}
                           ),
-                          
-                          Container(
-                            color: Colors.transparent,
-                            width: sizeFrmDatosPers.width * 0.85,
-                            height: sizeFrmDatosPers.height * 0.13,
-                            child: TextFormField(
-                              onChanged: (value) {
-                                pagoServiceForm.varNombre = value;
-                              },
-                              inputFormatters: [
-                                FilteringTextInputFormatter.deny(RegExp(regexToRemoveEmoji))
-                              ],
-                              //controller: txtNombre,
-                              style: const TextStyle(color: Colors.black),
-                              maxLines: 1,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecorations.authInputDecoration(
-                                esEdicion: false,
-                                varEsContrasenia: false,
-                                colorBordes: Colors.black,
-                                colorTexto: Colors.black,
-                                varTamanioIcono: 35,
-                                hintText: '',
-                                labelText: 'Nombres',
-                                sufixIcon: Icons.person,
-                                colorPrefixIcon: Colors.black,
-                                varOnPress: () {}
-                              ),
-                            ),
+                        ),
+                      ),
+                      
+                      SizedBox(
+                        height: sizeFrmDatosPers.height * 0.007,
+                      ),
+
+                      Container(
+                        color: Colors.transparent,
+                        width: sizeFrmDatosPers.width * 0.85,
+                        height: sizeFrmDatosPers.height * 0.13,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            pagoServiceForm.varIdentificacion = value;
+                          },
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(RegExp(regexToRemoveEmoji))
+                          ],
+                          initialValue: pagoServiceForm.varIdentificacion,
+                          style: const TextStyle(color: Colors.black),
+                          maxLines: 1,
+                          minLines: 1,
+                          maxLength: 10,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecorations.authInputDecoration(
+                            esEdicion: false,
+                            varEsContrasenia: false,
+                            colorBordes: Colors.black,
+                            colorTexto: Colors.black,
+                            varTamanioIcono: 35,
+                            hintText: '',
+                            labelText: 'Identificación',
+                            sufixIcon: Icons.account_circle_outlined,
+                            colorPrefixIcon: Colors.black,
+                            varOnPress: () {}
                           ),
-                          
-                          SizedBox(
-                            height: sizeFrmDatosPers.height * 0.007,
+                          validator: (value) {
+                            String respt = 'Ok';
+                            if (value != null && value != '' && value.length > 9) {
+                              respt = ValidacionesUtils().validaCedula(value.toString());
+                            }
+
+                            if(respt != 'Ok') {
+                              esIdentificacionInvalida = true;
+                            } else {
+                              esIdentificacionInvalida = false;
+                            }
+
+                            return respt == 'Ok' ? null : 'Cédula inválida.';
+                          },
+                        ),
+                      ),
+                      
+                      SizedBox(
+                        height: sizeFrmDatosPers.height * 0.007,
+                      ),
+
+                      Container(
+                        color: Colors.transparent,
+                        width: sizeFrmDatosPers.width * 0.85,
+                        height: sizeFrmDatosPers.height * 0.13,
+                        child: TextFormField(
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(RegExp(regexToRemoveEmoji))
+                          ],
+                          initialValue: pagoServiceForm.varTelefono,
+                          onChanged: (value) {
+                            pagoServiceForm.varTelefono = value;
+                          },
+                          //controller: txtTelefono,
+                          style: const TextStyle(color: Colors.black),
+                          maxLines: 1,
+                          maxLength: 10,
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecorations.authInputDecoration(
+                            esEdicion: false,
+                            varEsContrasenia: false,
+                            colorBordes: Colors.black,
+                            colorTexto: Colors.black,
+                            varTamanioIcono: 35,
+                            hintText: '',
+                            labelText: 'Número de teléfono',
+                            sufixIcon: Icons.phone_android,
+                            colorPrefixIcon: Colors.black,
+                            varOnPress: () {}
                           ),
+                        ),
+                      ),
+                      
+                      SizedBox(
+                        height: sizeFrmDatosPers.height * 0.007,
+                      ),
 
-                          Container(
-                            color: Colors.transparent,
-                            width: sizeFrmDatosPers.width * 0.85,
-                            height: sizeFrmDatosPers.height * 0.13,
-                            child: TextFormField(
-                              onChanged: (value) {
-                                pagoServiceForm.varIdentificacion = value;
-                              },
-                              inputFormatters: [
-                                FilteringTextInputFormatter.deny(RegExp(regexToRemoveEmoji))
-                              ],
-                              //controller: txtIdentificacion,
-                              style: const TextStyle(color: Colors.black),
-                              maxLines: 1,
-                              minLines: 1,
-                              maxLength: 10,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecorations.authInputDecoration(
-                                esEdicion: false,
-                                varEsContrasenia: false,
-                                colorBordes: Colors.black,
-                                colorTexto: Colors.black,
-                                varTamanioIcono: 35,
-                                hintText: '',
-                                labelText: 'Identificación',
-                                sufixIcon: Icons.account_circle_outlined,
-                                colorPrefixIcon: Colors.black,
-                                varOnPress: () {}
-                              ),
-                              validator: (value) {
-                                String respt = 'Ok';
-                                if (value != null && value != '' && value.length > 9) {
-                                  respt = ValidacionesUtils().validaCedula(value.toString());
-                                }
-
-                                if(respt != 'Ok') {
-                                  esIdentificacionInvalida = true;
-                                } else {
-                                  esIdentificacionInvalida = false;
-                                }
-
-                                return respt == 'Ok' ? null : 'Cédula inválida.';
-                              },
-                            ),
+                      Container(
+                        color: Colors.transparent,
+                        width: sizeFrmDatosPers.width * 0.85,
+                        height: sizeFrmDatosPers.height * 0.13,
+                        child: TextFormField(
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(RegExp(regexToRemoveEmoji))
+                          ],
+                          onChanged: (value) {
+                            pagoServiceForm.varCorreo = value;
+                          },
+                          style: const TextStyle(color: Colors.black),
+                          maxLines: 1,
+                          maxLength: 50,
+                          initialValue: correoGenPago,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecorations.authInputDecoration(
+                            esEdicion: false,
+                            varEsContrasenia: false,
+                            colorBordes: Colors.black,
+                            colorTexto: Colors.black,
+                            varTamanioIcono: 35,
+                            hintText: '',
+                            labelText: 'Correo',
+                            sufixIcon: Icons.email_outlined,
+                            colorPrefixIcon: Colors.black,
+                            varOnPress: () {}
                           ),
-                          
-                          SizedBox(
-                            height: sizeFrmDatosPers.height * 0.007,
+                          validator: (value) {
+                            String respt = 'Ok';
+
+                            if(correoGenPago.isNotEmpty && value == null) {
+                              value = correoGenPago;
+                            }
+
+                            if (value != null && value != '') {
+                              respt = ValidacionesUtils().validaCorreo(value.toString());
+                            }
+
+                            return respt != 'Ok' ? null : 'Correo inválido.';
+                          },
+                        ),
+                      ),
+
+                      SizedBox(
+                        height: sizeFrmDatosPers.height * 0.007,
+                      ),
+                      
+                      Container(
+                        color: Colors.transparent,
+                        width: sizeFrmDatosPers.width * 0.85,
+                        height: sizeFrmDatosPers.height * 0.13,
+                        child: TextFormField(
+                          initialValue: pagoServiceForm.varPago,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(RegExp(regexToRemoveEmoji))
+                          ],
+                          //controller: txtPago,
+                          onChanged: (value) {
+                            pagoServiceForm.varPago = value;
+                          },
+                          style: const TextStyle(color: Colors.black),
+                          maxLines: 1,
+                          maxLength: 4,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecorations.authInputDecoration(
+                              esEdicion: false,
+                              varEsContrasenia: false,
+                              colorBordes: Colors.black,
+                              colorTexto: Colors.black,
+                              varTamanioIcono: 35,
+                              hintText: '',
+                              labelText: 'Valor de pago',
+                              sufixIcon: Icons.monetization_on_outlined,
+                              colorPrefixIcon: Colors.black,
+                              varOnPress: () {}),
+                        ),
+                      ),
+                      
+                      SizedBox(
+                        height: sizeFrmDatosPers.height * 0.007,
+                      ),
+
+                      Container(
+                        color: Colors.transparent,
+                        width: sizeFrmDatosPers.width * 0.85,
+                        height: sizeFrmDatosPers.height * 0.13,
+                        child: TextFormField(
+                          initialValue: pagoServiceForm.varDireccion,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(RegExp(regexToRemoveEmoji))
+                          ],
+                          //controller: txtDireccion,
+                          onChanged: (value) {
+                            pagoServiceForm.varDireccion = value;
+                          },
+                          style: const TextStyle(color: Colors.black),
+                          maxLines: 3,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecorations.authInputDecoration(
+                            esEdicion: false,
+                            varEsContrasenia: false,
+                            colorBordes: Colors.black,
+                            colorTexto: Colors.black,
+                            varTamanioIcono: 35,
+                            hintText: '',
+                            labelText: 'Dirección',
+                            sufixIcon: Icons.map_outlined,
+                            colorPrefixIcon: Colors.black,
+                            varOnPress: () {}
                           ),
+                        ),
+                      ),
 
-                          Container(
-                            color: Colors.transparent,
-                            width: sizeFrmDatosPers.width * 0.85,
-                            height: sizeFrmDatosPers.height * 0.13,
-                            child: TextFormField(
-                              inputFormatters: [
-                                FilteringTextInputFormatter.deny(RegExp(regexToRemoveEmoji))
-                              ],
-                              onChanged: (value) {
-                                pagoServiceForm.varTelefono = value;
-                              },
-                              //controller: txtTelefono,
-                              style: const TextStyle(color: Colors.black),
-                              maxLines: 1,
-                              maxLength: 10,
-                              keyboardType: TextInputType.phone,
-                              decoration: InputDecorations.authInputDecoration(
-                                esEdicion: false,
-                                varEsContrasenia: false,
-                                colorBordes: Colors.black,
-                                colorTexto: Colors.black,
-                                varTamanioIcono: 35,
-                                hintText: '',
-                                labelText: 'Número de teléfono',
-                                sufixIcon: Icons.phone_android,
-                                colorPrefixIcon: Colors.black,
-                                varOnPress: () {}
-                              ),
-                            ),
-                          ),
-                          
-                          SizedBox(
-                            height: sizeFrmDatosPers.height * 0.007,
-                          ),
+                      SizedBox(
+                        height: sizeFrmDatosPers.height * 0.03,
+                      ),
 
-                          Container(
-                            color: Colors.transparent,
-                            width: sizeFrmDatosPers.width * 0.85,
-                            height: sizeFrmDatosPers.height * 0.13,
-                            child: TextFormField(
-                              inputFormatters: [
-                                FilteringTextInputFormatter.deny(RegExp(regexToRemoveEmoji))
-                              ],
-                              onChanged: (value) {
-                                pagoServiceForm.varCorreo = value;
-                              },
-                              style: const TextStyle(color: Colors.black),
-                              maxLines: 1,
-                              maxLength: 50,
-                              initialValue: correoGenPago,
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: InputDecorations.authInputDecoration(
-                                esEdicion: false,
-                                varEsContrasenia: false,
-                                colorBordes: Colors.black,
-                                colorTexto: Colors.black,
-                                varTamanioIcono: 35,
-                                hintText: '',
-                                labelText: 'Correo',
-                                sufixIcon: Icons.email_outlined,
-                                colorPrefixIcon: Colors.black,
-                                varOnPress: () {}
-                              ),
-                              validator: (value) {
-                                String respt = 'Ok';
-
-                                if(correoGenPago.isNotEmpty && value == null) {
-                                  value = correoGenPago;
-                                }
-
-                                if (value != null && value != '') {
-                                  respt = ValidacionesUtils().validaCorreo(value.toString());
-                                }
-
-                                return respt != 'Ok' ? null : 'Correo inválido.';
-                              },
-                            ),
-                          ),
-
-                          SizedBox(
-                            height: sizeFrmDatosPers.height * 0.007,
-                          ),
-                          
-                          Container(
-                            color: Colors.transparent,
-                            width: sizeFrmDatosPers.width * 0.85,
-                            height: sizeFrmDatosPers.height * 0.13,
-                            child: TextFormField(
-                              inputFormatters: [
-                                FilteringTextInputFormatter.deny(RegExp(regexToRemoveEmoji))
-                              ],
-                              //controller: txtPago,
-                              onChanged: (value) {
-                                pagoServiceForm.varPago = value;
-                              },
-                              style: const TextStyle(color: Colors.black),
-                              maxLines: 1,
-                              maxLength: 4,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecorations.authInputDecoration(
-                                  esEdicion: false,
-                                  varEsContrasenia: false,
-                                  colorBordes: Colors.black,
-                                  colorTexto: Colors.black,
-                                  varTamanioIcono: 35,
-                                  hintText: '',
-                                  labelText: 'Valor de pago',
-                                  sufixIcon: Icons.monetization_on_outlined,
-                                  colorPrefixIcon: Colors.black,
-                                  varOnPress: () {}),
-                            ),
-                          ),
-                          
-                          SizedBox(
-                            height: sizeFrmDatosPers.height * 0.007,
-                          ),
-
-                          Container(
-                            color: Colors.transparent,
-                            width: sizeFrmDatosPers.width * 0.85,
-                            height: sizeFrmDatosPers.height * 0.13,
-                            child: TextFormField(
-                              inputFormatters: [
-                                FilteringTextInputFormatter.deny(RegExp(regexToRemoveEmoji))
-                              ],
-                              //controller: txtDireccion,
-                              onChanged: (value) {
-                                pagoServiceForm.varDireccion = value;
-                              },
-                              style: const TextStyle(color: Colors.black),
-                              maxLines: 3,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecorations.authInputDecoration(
-                                esEdicion: false,
-                                varEsContrasenia: false,
-                                colorBordes: Colors.black,
-                                colorTexto: Colors.black,
-                                varTamanioIcono: 35,
-                                hintText: '',
-                                labelText: 'Dirección',
-                                sufixIcon: Icons.map_outlined,
-                                colorPrefixIcon: Colors.black,
-                                varOnPress: () {}
-                              ),
-                            ),
-                          ),
-
-                          SizedBox(
-                            height: sizeFrmDatosPers.height * 0.03,
-                          ),
-
-                          FadeAnimation(
-                              null,
-                              1.6,
-                              AnimatedBuilder(
-                                animation: _scaleController ??
-                                  AnimationController(
-                                    vsync: this,
-                                    duration: const Duration(milliseconds: 300)),
-                                    builder: (context, child) => Transform.scale(
-                                      scale: _scaleAnimation!.value,
-                                      child: Center(
-                                        child: AnimatedBuilder(
-                                          animation: _widthController ??
-                                          AnimationController(
-                                            vsync: this,
-                                            duration: const Duration(milliseconds: 600)
-                                          ),
-                                      builder: (context, child) => Container(
-                                        width: _widthAnimation!.value,
-                                        height: 80,
-                                        padding: const EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(50),
-                                          color: Colors.orange.withOpacity(.4)
-                                        ),
-                                        child: InkWell(
-                                          onTap: () async {
-                                            FocusScope.of(context).unfocus();
-
-                                            pagoServiceForm.varCorreo = pagoServiceForm.varCorreo.isEmpty ? correoGenPago : pagoServiceForm.varCorreo;
-
-                                            String mensajeValidacion = pagoServiceForm.validaDatos();
-                            
-                                            if(mensajeValidacion.isNotEmpty) {
-                                                CustomBgAlertBox(
-                                                  context: context,
-                                                  title: tituloMensajeError,
-                                                  infoMessage: mensajeValidacion,
-                                                  buttonColor: Colors.red,
-                                                  buttonText: 'Cerrar',
-                                                  icon: Icons.cancel,
-                                                  titleTextColor: Colors.red[400],
-                                                );
-                                                return;
-                                              }
-                            
-                                              await showBarModalBottomSheet(
-                                                topControl: crearTop(context, sizeFrmDatosPers),
-                                                useRootNavigator: true,
-                                                elevation: 5,
-                                                expand: true,
-                                                context: context,
-                                                builder: (context) =>
-                                                ModalPagoPluxView(
-                                                  pagoPluxModel: paymentModel,
-                                                  onClose: obtenerDatos,                                                    
-                                                )
-                                              );
-
-                                              await Future.delayed(const Duration(seconds: 1));
-
-                                              _scaleController!.forward();
-                                          },
-                                          child: Stack(children: <Widget>[
-                                            AnimatedBuilder(
-                                              animation: _positionController!,
-                                              builder: (context, child) =>
-                                                  Positioned(
-                                                left: _positionAnimation!.value,
-                                                child: AnimatedBuilder(
-                                                  animation: _scale2Controller!,
-                                                  builder: (context, child) =>
-                                                      Transform.scale(
-                                                          scale: _scale2Animation!
-                                                              .value,
-                                                          child: Container(
-                                                              width: 60,
-                                                              height: 60,
-                                                              decoration: BoxDecoration(
-                                                                  shape: BoxShape.circle,
-                                                                  color: objColoresAppForms.pluxNaranja
-                                                                ),
-                                                              child: const Icon(
-                                                                Icons.arrow_forward_ios,
-                                                                color: Colors.white,
-                                                              )
-                                                            )
-                                                          ),
-                                                ),
-                                              ),
-                                            ),
-                                          ]),
-                                        ),
+                      FadeAnimation(
+                          null,
+                          1.6,
+                          AnimatedBuilder(
+                            animation: _scaleController ??
+                              AnimationController(
+                                vsync: this,
+                                duration: const Duration(milliseconds: 300)),
+                                builder: (context, child) => Transform.scale(
+                                  scale: _scaleAnimation!.value,
+                                  child: Center(
+                                    child: AnimatedBuilder(
+                                      animation: _widthController ??
+                                      AnimationController(
+                                        vsync: this,
+                                        duration: const Duration(milliseconds: 600)
                                       ),
+                                  builder: (context, child) => Container(
+                                    width: _widthAnimation!.value,
+                                    height: 80,
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50),
+                                      color: Colors.orange.withOpacity(.4)
                                     ),
-                                  )
+                                    child: InkWell(
+                                      onTap: () async {
+                                        FocusScope.of(context).unfocus();
+
+                                        pagoServiceForm.varCorreo = pagoServiceForm.varCorreo.isEmpty ? correoGenPago : pagoServiceForm.varCorreo;
+
+                                        String mensajeValidacion = pagoServiceForm.validaDatos();
+                        
+                                        if(mensajeValidacion.isNotEmpty) {
+                                            CustomBgAlertBox(
+                                              context: context,
+                                              title: tituloMensajeError,
+                                              infoMessage: mensajeValidacion,
+                                              buttonColor: Colors.red,
+                                              buttonText: 'Cerrar',
+                                              icon: Icons.cancel,
+                                              titleTextColor: Colors.red[400],
+                                            );
+                                            return;
+                                          }
+                        
+                                          await showBarModalBottomSheet(
+                                            topControl: crearTop(context, sizeFrmDatosPers),
+                                            useRootNavigator: true,
+                                            elevation: 5,
+                                            expand: true,
+                                            context: context,
+                                            builder: (context) =>
+                                            ModalPagoPluxView(
+                                              pagoPluxModel: paymentModel,
+                                              onClose: obtenerDatos,                                                    
+                                            )
+                                          );
+
+                                          PagoResponseModel? objRespuest;
+
+                                          var objTmp = await storagePagoFrm.read(key: 'objRespuestaPago') ?? '';
+                                          if(objTmp != '') 
+                                          {
+                                            objRespuest = PagoResponseModel.fromJson(objTmp);
+                                          }
+                                          
+                                          if(objRespuest != null && objRespuest.respuestaEnviada! && objRespuest.code == 0) {
+                                            await Future.delayed(const Duration(seconds: 1));
+                                            pagoServiceForm.LimpiaCampos();
+                                            _scaleController!.forward();
+                                          }
+                                          
+                                      },
+                                      child: Stack(children: <Widget>[
+                                        AnimatedBuilder(
+                                          animation: _positionController!,
+                                          builder: (context, child) =>
+                                              Positioned(
+                                            left: _positionAnimation!.value,
+                                            child: AnimatedBuilder(
+                                              animation: _scale2Controller!,
+                                              builder: (context, child) =>
+                                                  Transform.scale(
+                                                      scale: _scale2Animation!
+                                                          .value,
+                                                      child: Container(
+                                                          width: 60,
+                                                          height: 60,
+                                                          decoration: BoxDecoration(
+                                                              shape: BoxShape.circle,
+                                                              color: objColoresAppForms.pluxNaranja
+                                                            ),
+                                                          child: const Icon(
+                                                            Icons.arrow_forward_ios,
+                                                            color: Colors.white,
+                                                          )
+                                                        )
+                                                      ),
+                                            ),
+                                          ),
+                                        ),
+                                      ]),
+                                    ),
+                                  ),
                                 ),
                               )
                             ),
-                        ],
+                          )
+                        ),
+                    
+                      SizedBox(
+                        height: sizeFrmDatosPers.height * 0.03,
                       ),
-                    ),
+                    
+                    ],
                   ),
                 ),
               ),
             ),
-          )),
+          ),
+        )
+      ),
     );
   }
 }
 
 Widget crearTop(BuildContext context, Size objSize) {
-  return Container(height: objSize.height * 0.3);
+  return Container(height: objSize.height * 0.1);
 }
 
 openPpx() {

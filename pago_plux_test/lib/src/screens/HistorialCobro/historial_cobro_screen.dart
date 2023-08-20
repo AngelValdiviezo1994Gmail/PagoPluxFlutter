@@ -43,6 +43,11 @@ class HistorialCobroScreen extends StatelessWidget {
                 );
               },
             ),
+            title: Container(
+              width: size.width * 0.75,
+              alignment: Alignment.center,
+              child: AutoSizeText("Historial de Cobros",style: TextStyle(color: Colors.white),),
+            ),
           ),
           body: FutureBuilder(
             future: PagoService().historialCobro("1792039010001","2023-08-01","2023-08-19","unico","pagado","1722530795"),

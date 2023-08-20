@@ -1,4 +1,3 @@
-//import 'package:pago_plux_test/src/screens/Errores/index.dart';
 import 'package:pago_plux_test/src/services/index.dart';
 
 import 'package:flutter/material.dart';
@@ -72,6 +71,7 @@ class PagoPluxAppState extends State<PagoPluxApp> {
             RegistroUsuarioScreen.routerName: (_) => RegistroUsuarioScreen(),
             ContraseniaScreen.routerName: (_) => ContraseniaScreen(correoUser: ''),
             HistorialCobroScreen.routerName: (_) => HistorialCobroScreen(),
+            PagosFrmScreen.routerName: (_) => PagosFrmScreen(),
           }
       ),
     );

@@ -8,13 +8,14 @@
 
 import 'dart:convert';
 
-import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
-
+import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:pago_plux_test/environments/index.dart';
 import 'package:pago_plux_test/src/models/index.dart';
 
 ColoresApp objColoresAppModal = new ColoresApp();
+final storagePayBox = const FlutterSecureStorage();
 
 //ignore: must_be_immutable
 class ModalPagoPluxView extends StatelessWidget {
@@ -58,13 +59,28 @@ class ModalPagoPluxView extends StatelessWidget {
                 javascriptChannels: Set.from([
                   JavascriptChannel(
                     name: 'Print',
-                    onMessageReceived: (JavascriptMessage message) {
+                    onMessageReceived: (JavascriptMessage respuestaPage) {
                       
                       try {
-                        final responseModel = PagoResponseModel.fromJson(message.message);
-                        //onClose = responseModel;
+                        final responseModel = PagoResponseModel.fromJson(respuestaPage.message);
+                        
                         this.onClose = obtenerDatos(responseModel);
+                        //storagePayBox.write(key: 'objRespuestaPago', value: responseModel.toJson());
+                        storagePayBox.write(key: 'objRespuestaPago', value: respuestaPage.message);
+
+/*
+                        final cambiaEstado = BlocProvider.of<EstadosBloc>(context);
+                        cambiaEstado.setRespuestaModel(responseModel);
+
+                        if(responseModel.code == 500){
+                          cambiaEstado.setCierraUsuarioModal(true);
+                        } else {
+                          cambiaEstado.setCierraUsuarioModal(false);
+                        }
+*/
+
                         Navigator.of(context).pop();
+                      
                       }
                       catch(Ex) {
                         print('Test Error: ${Ex}');
@@ -191,5 +207,5 @@ class ModalPagoPluxView extends StatelessWidget {
 obtenerDatos(PagoResponseModel datos) {
   //voucher = 'Voucher: ' + datos.detail!.token!;
   //setState(() {});
-  print('LLegoooo 2' + datos.detail!.token!);
+  //print('LLegoooo 2' + datos.detail!.token!);
 }

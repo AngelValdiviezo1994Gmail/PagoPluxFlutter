@@ -7,12 +7,22 @@ class PagoResponseModel {
   String? status;
   bool? respuestaEnviada;
 
+  PagoResponseModel(
+    {
+      required code,
+      required description,
+      required detail,
+      required status,
+      required respuestaEnviada,
+    }
+  );
+
   factory PagoResponseModel.fromJson(String str) => PagoResponseModel.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
   PagoResponseModel.fromMap(Map<String, dynamic> json) {
-    code = json['code'] ?? '';
+    code = json['code'] ?? 0;
     description = json['description'] ?? '';
     status = json['status'] ?? '';
     respuestaEnviada = json['respuestaEnviada'] ?? false;
@@ -20,10 +30,11 @@ class PagoResponseModel {
   }
 
   Map<String, dynamic> toMap() => {
-    "code": code,
-    "description": description,
-    "status": status,
-    "detail": detail
+    "code": code ?? 0,
+    "description": description ?? '',
+    "status": status ?? '',
+    "detail": detail ?? null,
+    "respuestaEnviada": respuestaEnviada ?? false
   };
 }
 
